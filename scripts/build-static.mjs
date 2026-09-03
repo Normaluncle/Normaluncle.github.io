@@ -2,7 +2,8 @@ import {build,createServer,loadEnv} from 'vite'
 import {readFile,writeFile,mkdir} from 'node:fs/promises'
 import path from 'node:path'
 const environment=loadEnv('production',process.cwd(),'VITE_')
-const origin=process.env.VITE_PUBLIC_SITE_ORIGIN||environment.VITE_PUBLIC_SITE_ORIGIN||''
+const siteConfig=JSON.parse(await readFile('src/site-config.json','utf8'))
+const origin=process.env.VITE_PUBLIC_SITE_ORIGIN||environment.VITE_PUBLIC_SITE_ORIGIN||siteConfig.origin||''
 if(origin){const u=new URL(origin);if(!['http:','https:'].includes(u.protocol)||u.pathname!=='/'||u.search||u.hash)throw new Error('VITE_PUBLIC_SITE_ORIGIN must be a http(s) origin without a subdirectory')}
 await build()
 const vite=await createServer({cacheDir:'.verify/static-vite-cache',optimizeDeps:{noDiscovery:true,include:[]},server:{middlewareMode:true,hmr:false},appType:'custom',mode:'production'})
