@@ -1,0 +1,347 @@
+{
+  "favicon": {
+    "source": "brand/brand-01-knot.png",
+    "width": 128,
+    "usage": "浏览器图标"
+  },
+  "brandPoster": {
+    "source": "brand/brand-orb-original-frame.png",
+    "width": 256,
+    "usage": "原版彩球视频的原样截图：加载时与播放后保持一致"
+  },
+  "chatLogo": {
+    "source": "shengsuan/shengsuan-logo.png",
+    "width": 96,
+    "usage": "微信栏胜算图标"
+  },
+  "hero01": {
+    "source": "shengsuan/shengsuan-01-cover.png",
+    "width": 960,
+    "usage": "Hero拼图1：胜算"
+  },
+  "hero02": {
+    "source": "portrait/portrait-03-crop.png",
+    "width": 960,
+    "usage": "Hero2：上方近景肖像，优先露出眼睛"
+  },
+  "hero03": {
+    "source": "art/wall-color.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 4 号"
+  },
+  "hero04": {
+    "source": "stall/stall-01-cover.png",
+    "width": 960,
+    "usage": "Hero拼图4：点单封面（待后续精修）"
+  },
+  "hero05": {
+    "source": "art/wall-street.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 14 号"
+  },
+  "hero06": {
+    "source": "marketing-assistant/marketing-assistant-01-cover.png",
+    "width": 960,
+    "usage": "Hero拼图6：营销总览"
+  },
+  "hero07": {
+    "source": "art/wall-type.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 2 号"
+  },
+  "hero08": {
+    "source": "portrait/portrait-02-work.png",
+    "width": 960,
+    "usage": "Hero8：下方工作状态照片"
+  },
+  "hero09": {
+    "source": "job-assistant/job-assistant-01-task-confirm.png",
+    "width": 960,
+    "usage": "Hero拼图9：任务确认"
+  },
+  "showreel01": {
+    "source": "art/wall-purple.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 8 号"
+  },
+  "showreel02": {
+    "source": "process/process-02-flow.png",
+    "width": 960,
+    "usage": "Showreel拼图2：流程白板"
+  },
+  "showreel03": {
+    "source": "art/wall-mural.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 12 号"
+  },
+  "showreel04": {
+    "source": "shengsuan/shengsuan-02-overview.png",
+    "width": 960,
+    "usage": "Showreel拼图4：胜算总览"
+  },
+  "showreel05": {
+    "source": "portrait/portrait-04-showreel.png",
+    "width": 1600,
+    "usage": "Showreel拼图5：中央横版肖像"
+  },
+  "showreel06": {
+    "source": "motion/keyframe-02-agent-flow.png",
+    "width": 960,
+    "usage": "Showreel拼图6：Agent静态关键帧"
+  },
+  "showreel07": {
+    "source": "art/wall-planets.jpg",
+    "width": 960,
+    "usage": "个人原作：素材总览 6 号"
+  },
+  "showreel08": {
+    "source": "process/process-03-product-test.png",
+    "width": 960,
+    "usage": "Showreel拼图8：设备测试"
+  },
+  "showreel09": {
+    "source": "art/ink-ornament.png",
+    "width": 960,
+    "usage": "个人原作：素材总览 16 号"
+  },
+  "visionPortrait": {
+    "source": "portrait/portrait-01-vision.png",
+    "width": 1800,
+    "usage": "Vision放大肖像"
+  },
+  "aboutPortrait": {
+    "source": "portrait/portrait-05-about.png",
+    "width": 1800,
+    "usage": "关于页独立肖像"
+  },
+  "shengsuanCover": {
+    "source": "shengsuan/shengsuan-04-daily-card.png",
+    "width": 1600,
+    "usage": "胜算列表封面：每日卡（暖金），独立于详情首图"
+  },
+  "shengsuanHero": {
+    "source": "shengsuan/shengsuan-01-cover.png",
+    "width": 1920,
+    "usage": "shengsuan案例页首图，独立于列表封面"
+  },
+  "shengsuanShot1": {
+    "source": "shengsuan/shengsuan-02-overview.png",
+    "width": 1920,
+    "usage": "shengsuan案例详情1"
+  },
+  "shengsuanShot2": {
+    "source": "shengsuan/shengsuan-03-wecom.png",
+    "width": 1920,
+    "usage": "shengsuan案例详情2"
+  },
+  "shengsuanShot3": {
+    "source": "shengsuan/shengsuan-04-daily-card.png",
+    "width": 1920,
+    "usage": "shengsuan案例详情3"
+  },
+  "shengsuanShot4": {
+    "source": "shengsuan/shengsuan-05-heartbeat.png",
+    "width": 1920,
+    "usage": "shengsuan案例详情4"
+  },
+  "shengsuanShot5": {
+    "source": "shengsuan/shengsuan-06-identity.png",
+    "width": 1920,
+    "usage": "shengsuan案例详情5"
+  },
+  "marketingCover": {
+    "source": "testimonials/quote-03-business.png",
+    "width": 1600,
+    "usage": "营销列表封面：浅色商家场景示意，独立于详情首图"
+  },
+  "marketingHero": {
+    "source": "marketing-assistant/marketing-assistant-01-cover.png",
+    "width": 1920,
+    "usage": "marketing案例页首图，独立于列表封面"
+  },
+  "marketingShot1": {
+    "source": "marketing-assistant/marketing-assistant-02-configuration.png",
+    "width": 1920,
+    "usage": "marketing案例详情1"
+  },
+  "marketingShot2": {
+    "source": "marketing-assistant/marketing-assistant-03-runtime.png",
+    "width": 1920,
+    "usage": "marketing案例详情2"
+  },
+  "marketingShot3": {
+    "source": "marketing-assistant/marketing-assistant-04-ai-review-wide.png",
+    "width": 1920,
+    "usage": "marketing案例详情3"
+  },
+  "agentCover": {
+    "source": "job-assistant/job-assistant-01-task-confirm.png",
+    "width": 1600,
+    "usage": "agent作品封面（同项目列表共用）"
+  },
+  "agentHero": {
+    "source": "job-assistant/job-assistant-01-task-confirm.png",
+    "width": 1920,
+    "usage": "agent案例页首图，独立于列表封面"
+  },
+  "agentShot1": {
+    "source": "job-assistant/job-assistant-02-safety.png",
+    "width": 1920,
+    "usage": "agent案例详情1"
+  },
+  "agentShot2": {
+    "source": "job-assistant/job-assistant-03-screening.png",
+    "width": 1920,
+    "usage": "agent案例详情2"
+  },
+  "agentShot3": {
+    "source": "job-assistant/job-assistant-04-results.png",
+    "width": 1920,
+    "usage": "agent案例详情3"
+  },
+  "stallCover": {
+    "source": "stall/stall-01-cover.png",
+    "width": 1600,
+    "usage": "stall作品封面（同项目列表共用）"
+  },
+  "stallHero": {
+    "source": "stall/stall-01-cover.png",
+    "width": 1920,
+    "usage": "stall案例页首图，独立于列表封面"
+  },
+  "stallShot1": {
+    "source": "stall/stall-02-cooking-baskets-v4.png",
+    "width": 1920,
+    "usage": "stall案例详情1"
+  },
+  "stallShot2": {
+    "source": "stall/stall-03-paid-queue.png",
+    "width": 1920,
+    "usage": "stall案例详情2"
+  },
+  "stallShot3": {
+    "source": "stall/stall-04-merchant-kitchen.png",
+    "width": 1920,
+    "usage": "stall案例详情3"
+  },
+  "serviceWecom": {
+    "source": "shengsuan/shengsuan-03-wecom.png",
+    "width": 1200,
+    "usage": "服务区：企微Agent"
+  },
+  "serviceHeartbeat": {
+    "source": "shengsuan/shengsuan-05-heartbeat.png",
+    "width": 1200,
+    "usage": "服务区：拟人循环"
+  },
+  "serviceReview": {
+    "source": "marketing-assistant/marketing-assistant-04-ai-review-wide.png",
+    "width": 1200,
+    "usage": "服务区：采集评估"
+  },
+  "serviceAgent": {
+    "source": "job-assistant/job-assistant-04-results.png",
+    "width": 1200,
+    "usage": "服务区：任务Agent"
+  },
+  "serviceVisual": {
+    "source": "process/process-03-product-test.png",
+    "width": 1200,
+    "usage": "服务区：视觉到上线"
+  },
+  "blog1": {
+    "source": "blog/blog-01-memory-identities.png",
+    "width": 1200,
+    "usage": "博客封面1"
+  },
+  "blog2": {
+    "source": "blog/blog-02-cross-platform.png",
+    "width": 1200,
+    "usage": "博客封面2"
+  },
+  "blog3": {
+    "source": "blog/blog-03-sop.png",
+    "width": 1200,
+    "usage": "博客封面3"
+  },
+  "blog4": {
+    "source": "blog/blog-04-visual-to-product.png",
+    "width": 1200,
+    "usage": "博客封面4"
+  },
+  "testimonialsDoor": {
+    "source": "testimonials/testimonials-door.png",
+    "width": 1800,
+    "usage": "评价区开门整幅图；左右两半共用同一图"
+  },
+  "quote1": {
+    "source": "testimonials/quote-01-education.png",
+    "width": 1000,
+    "usage": "评价卡1场景图"
+  },
+  "quoteAvatar1": {
+    "source": "testimonials/quote-01-education.png",
+    "width": 96,
+    "usage": "评价卡1缩略图，非真实人物头像"
+  },
+  "quote2": {
+    "source": "testimonials/quote-02-collaboration.png",
+    "width": 1000,
+    "usage": "评价卡2场景图"
+  },
+  "quoteAvatar2": {
+    "source": "testimonials/quote-02-collaboration.png",
+    "width": 96,
+    "usage": "评价卡2缩略图，非真实人物头像"
+  },
+  "quote3": {
+    "source": "testimonials/quote-03-business.png",
+    "width": 1000,
+    "usage": "评价卡3场景图"
+  },
+  "quoteAvatar3": {
+    "source": "testimonials/quote-03-business.png",
+    "width": 96,
+    "usage": "评价卡3缩略图，非真实人物头像"
+  },
+  "quote4": {
+    "source": "testimonials/quote-04-operations.png",
+    "width": 1000,
+    "usage": "评价卡4场景图"
+  },
+  "quoteAvatar4": {
+    "source": "testimonials/quote-04-operations.png",
+    "width": 96,
+    "usage": "评价卡4缩略图，非真实人物头像"
+  },
+  "successImage": {
+    "source": "testimonials/quote-01-education.png",
+    "width": 1200,
+    "usage": "Stats下方教育合作场景示意"
+  },
+  "contactBackground": {
+    "source": "contact/contact-01-night-studio.png",
+    "width": 1920,
+    "usage": "首页联系背景"
+  },
+  "processStart": {
+    "source": "process/process-01-sketch.png",
+    "width": 1200,
+    "usage": "Process第一卡配图"
+  },
+  "processFinish": {
+    "source": "process/process-03-product-test.png",
+    "width": 1200,
+    "usage": "Process第二卡配图"
+  },
+  "chatAvatar1": {
+    "source": "avatars/avatar-01-student.png",
+    "width": 96,
+    "usage": "聊天学生头像"
+  },
+  "chatAvatar2": {
+    "source": "avatars/avatar-02-mentor.png",
+    "width": 96,
+    "usage": "聊天学姐头像"
+  }
+}
