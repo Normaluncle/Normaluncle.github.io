@@ -8,7 +8,7 @@ import {routeEdge} from '../route-edges'
 
 export default function System(){
  const {slug}=useParams(),story=systemStories.find(s=>s.slug===slug)
- if(!story)return <main className="page wrap"><h1>没有找到这份流程。</h1><Link to="/work">返回项目</Link></main>
+ if(!story)return <main className="page wrap"><h1>没有找到这份流程</h1><Link to="/work">返回项目</Link></main>
  return <SystemReader key={story.slug} story={story}/>
 }
 function SystemReader({story}:{story:SystemStory}){
@@ -23,7 +23,7 @@ function SystemReader({story}:{story:SystemStory}){
  },[])
  const go=(i:number)=>{const el=root.current?.querySelectorAll<HTMLElement>('.system-step')[i];if(!el)return;const y=el.getBoundingClientRect().top+scrollY+el.offsetHeight/2-innerHeight*(innerWidth<810?.77:.53);const l=(window as Window&{__lenis?:Lenis}).__lenis;if(l)l.scrollTo(y,{immediate:!!reduce});else window.scrollTo({top:y,behavior:reduce?'instant':'smooth'})}
  return <main className="page system-page">
-  <header className="system-intro wrap"><Link className="system-back" to={`/work/${work.slug}`}>← 回到{work.title}</Link><p className="kicker">({story.eyebrow})</p><h1>{story.title}</h1><div className="system-intro-bottom"><p>{story.intro}</p><div><span className="system-status">{story.status}</span><small>向下滚动阅读 · 流程演示，非实时后台</small></div></div></header>
+  <header className="system-intro wrap"><Link className="system-back" to={`/work/${work.slug}`}>← 回到{work.title}</Link><p className="kicker">({story.eyebrow})</p><h1>{story.title.split('\n').map((line,i)=><span className="title-line" key={i}>{line}</span>)}</h1><div className="system-intro-bottom"><p>{story.intro}</p><div><span className="system-status">{story.status}</span><small>向下滚动阅读 · 流程演示，非实时后台</small></div></div></header>
   {family.length>1&&<nav className="system-family wrap" aria-label="胜算流程主题">{family.map((s,i)=><Link key={s.slug} className={s.slug===story.slug?'selected':''} to={`/systems/${s.slug}`} aria-current={s.slug===story.slug?'page':undefined}><span>0{i+1}</span>{s.eyebrow.split('/')[1].trim()}</Link>)}</nav>}
   <div className="system-reader wrap" ref={root}>
    <div className="system-script">{story.steps.map((s,i)=><section className={`system-step${active===i?' active':''}`} key={s.title} aria-current={active===i?'step':undefined}><p className="system-step-number">{String(i+1).padStart(2,'0')} / {String(story.steps.length).padStart(2,'0')}</p><h2>{s.title}</h2><p className="system-step-body">{s.body}</p><dl><div><dt>从这里开始</dt><dd>{s.input}</dd></div><div><dt>这一步留下</dt><dd>{s.output}</dd></div></dl><details><summary>展开设计说明 <span>＋</span></summary><p>{s.detail}</p></details></section>)}</div>
@@ -35,8 +35,18 @@ function SystemReader({story}:{story:SystemStory}){
     <div className="system-key"><span><i/>当前涉及</span><span><i/>其他模块</span><span>没有自动播放</span></div>
    </aside>
   </div>
-  <section className="system-foundations wrap" aria-labelledby="system-foundations-title"><p className="kicker">(贯穿整条流程)</p><h2 id="system-foundations-title">让这些环节一起工作的底座。</h2><div>{story.foundations.map((item,i)=><article key={item.title}><span>0{i+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
-  <section className="system-closing wrap"><p className="kicker">(回到产品)</p><h2>{story.closing}</h2><div className="system-source-note"><span>设计依据</span><p>{story.sources.join(' / ')}</p></div><Link className="pill" to={`/work/${work.slug}`}><span className="pill-face">回到{work.title}项目 ↗</span></Link></section>
+  <section className="system-foundations wrap" aria-labelledby="system-foundations-title"><p className="kicker">(贯穿整条流程)</p><h2 id="system-foundations-title">让这些环节一起工作的底座</h2><div>{story.foundations.map((item,i)=><article key={item.title}><span>0{i+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
+  <section className="system-closing wrap"><p className="kicker">(回到产品)</p><h2>{story.closing.split('\n').map((line,i)=><span className="title-line" key={i}>{line}</span>)}</h2><div className="system-source-note"><span>设计依据</span><p>{story.sources.join(' / ')}</p></div><Link className="pill" to={`/work/${work.slug}`}><span className="pill-face">回到{work.title}项目 ↗</span></Link></section>
+  {family.length>1&&<section className="system-related wrap" aria-labelledby="system-related-title">
+   <p className="kicker">(继续阅读)</p><h2 id="system-related-title">继续探索{work.title}</h2>
+   <nav className="system-related-links" aria-label={`${work.title}流程主题（页尾）`}>
+    {family.map((s,i)=><Link key={s.slug} to={`/systems/${s.slug}`} className={s.slug===story.slug?'selected':''} aria-current={s.slug===story.slug?'page':undefined}>
+     <span className="system-related-number">{String(i+1).padStart(2,'0')}</span>
+     <strong>{s.eyebrow.split('/')[1]?.trim()||s.eyebrow}</strong>
+     <span className="system-related-action">{s.slug===story.slug?'当前主题':'查看流程 ↗'}</span>
+    </Link>)}
+   </nav>
+  </section>}
  </main>
 }
 function SystemMap({story,active}:{story:SystemStory;active:number}){

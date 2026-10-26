@@ -23,7 +23,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/art" element={<Art />} />
         <Route path="/systems/:slug" element={<System />} />
-        <Route path="*" element={<main className="page wrap"><h1>这个页面还不存在。</h1><p>可以返回首页，继续查看项目与笔记。</p><Link className="pill" to="/">返回首页</Link></main>} />
+        <Route path="*" element={<main className="page wrap"><h1>这个页面还不存在</h1><p>可以返回首页，继续查看项目与笔记。</p><Link className="pill" to="/">返回首页</Link></main>} />
       </Route>
     </Routes>
   )

@@ -14,6 +14,7 @@ import {
 
 import ChatDemo from '../ui/ChatDemo'
 import ContactPanel from '../ui/ContactPanel'
+import { titleUnits } from '../ui/titleUnits'
 
 function Ph({ id, src, alt = '' }: { id: string; src: string; alt?: string }) {
   return (
@@ -30,21 +31,27 @@ function Rise({
   text,
   step = 0.045,
   delay = 0,
+  phrases,
 }: {
   text: string
   step?: number
   delay?: number
+  phrases?: string[]
 }) {
-  const parts = text.includes(' ') ? text.split(' ') : Array.from(text)
+  let unitIndex = 0
   return (
-    <span className="rvw" aria-label={text}>
-      {parts.map((w, i) => (
-        <span className="rv-w" key={i} aria-hidden>
-          <span style={{ transitionDelay: `${(delay + i * step).toFixed(3)}s` }}>
-            {w}{text.includes(' ') && i < parts.length - 1 ? '\u00a0' : ''}
-          </span>
+    <span className={text.includes('\n') ? 'rvw rvw-multiline' : 'rvw'} aria-label={text}>
+      {text.split('\n').map((line, row) => {
+        const groups = phrases?.filter(phrase => line.includes(phrase))
+        const grouped = !!groups && groups.join('') === line
+        return <span className="rv-line" key={row} aria-hidden>
+          {(grouped ? groups : [line]).map((phrase, group) => <span className={grouped ? 'rv-phrase' : undefined} key={group}>
+            {titleUnits(phrase).map((unit, i) => <span className="rv-w" key={i}>
+              <span style={{ transitionDelay: `${(delay + unitIndex++ * step).toFixed(3)}s` }}>{unit}</span>
+            </span>)}
+          </span>)}
         </span>
-      ))}
+      })}
     </span>
   )
 }
@@ -75,6 +82,21 @@ export default function Home() {
   const [tstmI, setTstmI] = useState(0)
   const showreelRef = useRef<HTMLElement>(null)
   const talkRef = useRef<HTMLElement>(null)
+
+  // Browser chrome changes height mid-gesture; only a width change should
+  // remeasure the mobile pin geometry (including an orientation change).
+  const pageRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    let width = -1
+    const measure = () => {
+      if (width === window.innerWidth) return
+      width = window.innerWidth
+      pageRef.current?.style.setProperty('--home-screen', `${window.innerHeight}px`)
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   // the hero is a sticky direct child of <main>: it stays pinned at the
   // viewport top and the following sections (z-index 2, opaque) slide over
@@ -189,7 +211,7 @@ export default function Home() {
   })
 
   return (
-    <main>
+    <main className="home-page" ref={pageRef}>
       <section className="hero-sticky" data-rail data-theme="light">
         <div className="hero-pin">
           <motion.div
@@ -223,7 +245,7 @@ export default function Home() {
             </div>
             <div className="hero-dots" aria-hidden>{[0, 1, 2, 3].map((i) => <i key={i} />)}</div>
             <p className="hero-copyr">© 2026 王泽斌</p>
-            <h1 className="hero-word"><span>王泽斌</span><span>作品</span></h1>
+            <h1 className="hero-word"><span>王泽斌</span><span className="hero-collection">作品集</span></h1>
           </motion.div>
           <motion.span className="scroll-down" style={{ opacity: sdOp, y: sdY }}>
             向下探索
@@ -277,7 +299,7 @@ export default function Home() {
           <div className="reveal rvw-host reveal-late">
             <p className="kicker">王泽斌</p>
             <h2>
-              <Rise text="画过墙，带过场，也摆过摊。现在，把那些想法做成能用的产品。" step={0.03} />
+              <Rise text={'画过墙，带过场，也摆过摊\n现在，把那些想法做成能用的产品'} phrases={['画过墙，','带过场，','也摆过摊','现在，','把那些想法','做成能用的产品']} step={0.03} />
             </h2>
           </div>
         </div>
@@ -286,7 +308,7 @@ export default function Home() {
           <div className="card dark">
             <p className="kicker">(Practice)</p>
             <div>
-              <div className="big">{stats[0].n}</div>
+              <div className="big">{works.length}</div>
               <p>个精选项目</p>
             </div>
           </div>
@@ -381,7 +403,7 @@ export default function Home() {
         <div className="wrap bridge-inner">
           <p className="kicker reveal">(Process)</p>
           <h2 className="reveal rvw-host">
-            <Rise text="把下一件做成。" step={0.055} />
+            <Rise text="把下一件做成" step={0.055} />
           </h2>
           <p className="bridge-copy reveal reveal-late">先确认目标和限制，再用原型与可运行版本持续验证。</p>
           <div className="bridge-cards reveal reveal-late reveal-card">
@@ -453,7 +475,7 @@ export default function Home() {
           <div className="stats-lead reveal rvw-host">
             <p className="kicker">(Stats)</p>
             <h2>
-              <Rise text="经历，落到具体项目。" step={0.05} />
+              <Rise text="经历，落到具体项目" step={0.05} />
             </h2>
             <p>用项目、起点和方法，说明我正在做什么。</p>
             <Capsule className="ghost" to="/contact">聊聊需求</Capsule>
@@ -486,7 +508,7 @@ export default function Home() {
           <div className="notes-head reveal rvw-host">
             <span className="kicker">(Blog)</span>
             <h2>
-              <Rise text="项目背后的思考。" step={0.06} />
+              <Rise text="项目背后的思考" step={0.06} />
             </h2>
             <Capsule to="/news">全部笔记</Capsule>
           </div>
@@ -634,7 +656,9 @@ function StatCard({ s }: { s: (typeof stats)[number] }) {
         <div className="stat-face" aria-hidden={back}>
           <p className="kicker">({s.tag}) <span className="stat-hint">悬停 / 点击翻面 ↗</span></p>
           <div>
-            <strong>{s.n}</strong>
+            <strong className="stat-number" aria-label={s.n}>{s.n === '2020'
+              ? <><span className="stat-number-lead" aria-hidden>2</span><span className="stat-number-tail" aria-hidden>020</span></>
+              : s.n}</strong>
             <div><span>{s.l}</span></div>
             <span>{s.s}</span>
           </div>

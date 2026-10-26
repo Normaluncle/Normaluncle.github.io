@@ -11,6 +11,18 @@ export default function Art(){
  const [selection,setSelection]=useState<{group:string;index:number}|null>(null)
  const hero=useRef<HTMLElement>(null)
  const reduced=useReducedMotion()
+ useEffect(()=>{
+  if(reduced)return
+  const observer=new IntersectionObserver(entries=>{
+   entries.forEach(entry=>{
+    if(!entry.isIntersecting)return
+    entry.target.classList.add('art-media-enter')
+    observer.unobserve(entry.target)
+   })
+  },{threshold:.08,rootMargin:'0px 0px -24px 0px'})
+  document.querySelectorAll('.art-cover img, .art-frame img').forEach(image=>observer.observe(image))
+  return()=>observer.disconnect()
+ },[reduced])
  const {scrollYProgress}=useScroll({target:hero,offset:['start start','end start']})
  const drift=useTransform(scrollYProgress,[0,1],[0,reduced?0:90])
  const open=(m:ArtMedia)=>setSelection({group:m.group,index:artMedia.filter(x=>x.group===m.group).findIndex(x=>x.id===m.id)})
@@ -27,7 +39,7 @@ export default function Art(){
    </motion.div>
   </section>
   <section className="art-directory">
-   <div><p className="art-eyebrow">翻开这一页</p><h2>墙面、纸面，<br/>还有屏幕里面。</h2><p>这里不是另一份简历。是一些画过的墙、留下的线稿，和做过的小场景。作品不都来自同一个阶段，但都属于我。</p></div>
+   <div><p className="art-eyebrow">翻开这一页</p><h2>墙面、纸面，<br/>还有屏幕里面</h2><p>这里不是另一份简历。是一些画过的墙、留下的线稿，和做过的小场景。作品不都来自同一个阶段，但都属于我。</p></div>
    <nav aria-label="艺术作品分类">{artGroups.map(g=><button key={g.id} onClick={()=>jump(g.id)}><span>{g.no}</span><strong>{g.title}</strong><small>{artMedia.filter(m=>m.group===g.id).length} {g.id==='live'?'段':'张'}</small><i aria-hidden>↘</i></button>)}</nav>
   </section>
   {artGroups.map(g=>{
@@ -40,7 +52,7 @@ export default function Art(){
     <div className="art-collection-foot"><p>{g.id==='live'?'短片保留现场节奏，点击后播放。':'点击照片查看完整画面，方向键切换同组作品。'}</p><button onClick={()=>open(items[0])}>翻看这一组 <span>({items.length.toString().padStart(2,'0')}) ↗</span></button></div>
    </section>
   })}
-  <section className="art-outro"><p className="art-eyebrow">BACK TO WHAT'S NEXT</p><h2>换个画面，<br/>还是同一个我。</h2><div><p>画墙的时候，要考虑人从哪里看。<br/>做产品的时候，也一样。</p><Link to="/work">去看我的产品项目 ↗</Link><Link to="/contact">聊聊你的想法 ↗</Link></div><span className="art-signoff">王泽斌 © 2026</span></section>
+  <section className="art-outro"><p className="art-eyebrow">BACK TO WHAT'S NEXT</p><h2>换个画面，<br/>还是同一个我</h2><div><p>画墙的时候，要考虑人从哪里看。<br/>做产品的时候，也一样。</p><Link to="/work">去看我的产品项目 ↗</Link><Link to="/contact">聊聊你的想法 ↗</Link></div><span className="art-signoff">王泽斌 © 2026</span></section>
   {selection&&<ArtLightbox group={selection.group} initial={selection.index} onClose={()=>setSelection(null)}/>}
  </main>
 }

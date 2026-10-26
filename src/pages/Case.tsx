@@ -56,10 +56,10 @@ function CaseView({ w }: { w: Work }) {
         <p>{w.lead}</p>
       </Copy>
       <section className="case-context wrap">
-        <div><p className="kicker">起点 / CONTEXT</p><h2>先看当时的问题。</h2><p>{study.origin}</p></div>
-        <div><p className="kicker">我的角色 / ROLE</p><h2>从想法到实现。</h2><p>{study.role}</p></div>
+        <div><p className="kicker">起点 / CONTEXT</p><h2>先看当时的问题</h2><p>{study.origin}</p></div>
+        <div><p className="kicker">我的角色 / ROLE</p><h2>从想法到实现</h2><p>{study.role}</p></div>
       </section>
-      <section className="case-walkthrough wrap"><div><p className="kicker">不只看界面</p><h2>沿着流程，走一遍。</h2><p>随着阅读逐步看清输入、处理与结果；也可以直接切换步骤。</p></div><div className="case-maps">{w.maps.map(m=><Link className="pill" key={m.href} to={m.href}><span className="pill-face">{m.label} ↗</span></Link>)}</div></section>
+      <section className="case-walkthrough wrap"><div><p className="kicker">不只看界面</p><h2>沿着流程，走一遍</h2><p>随着阅读逐步看清输入、处理与结果；也可以直接切换步骤。</p></div><div className="case-maps">{w.maps.map(m=><Link className="pill" key={m.href} to={m.href}><span className="pill-face">{m.label} ↗</span></Link>)}</div></section>
       <p className="case-image-note wrap">以下为 AI 辅助制作的产品展示图，用于说明界面方向；流程页展示完整版产品架构与业务关系。</p>
       {w.shots.map((k, i) => <section className="case-chapter" key={k}>
         {study.approach[i] && <div className="case-decision wrap"><span>0{i+1}</span><h2>{study.approach[i].title}</h2><p>{study.approach[i].body}</p></div>}

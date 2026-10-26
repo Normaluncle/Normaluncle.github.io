@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-/** Entrance animations: direction is latched once, reset only well outside view. */
+/** Once per route: never reset behind the reader or force layout on every scroll. */
 export function usePageReveals(route: string) {
   useEffect(() => {
     const candidates = document.querySelectorAll<HTMLElement>(
@@ -8,73 +8,25 @@ export function usePageReveals(route: string) {
     )
     const added: HTMLElement[] = []
     candidates.forEach((el) => {
-      if (!el.closest('.reveal, .vision, .showreel, .t-fly, .chat-demo, .work-pin, .system-visual, .art-viewer')) {
+      if (!el.closest('.reveal, .vision, .showreel, .t-fly, .chat-demo, .work-pin, .system-visual, .art-viewer, .hero-word')) {
         el.classList.add('reveal', 'auto-reveal')
         added.push(el)
       }
     })
     const elements = [...document.querySelectorAll<HTMLElement>('.reveal')]
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const shown = new Set<HTMLElement>()
-    const timers = new Map<HTMLElement, number>()
-    let frame = 0
-    let lastY = window.scrollY
-    let direction = 'down'
-    let initialized = false
-    const clear = (el: HTMLElement) => {
-      window.clearTimeout(timers.get(el))
-      timers.delete(el)
-    }
-    const scan = () => {
-      frame = 0
-      const y = window.scrollY
-      if (initialized && Math.abs(y - lastY) > 1) direction = y > lastY ? 'down' : 'up'
-      initialized = true
-      lastY = y
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect()
-        const outside = rect.bottom < -96 || rect.top > innerHeight + 96
-        const visible = rect.bottom > 24 && rect.top < innerHeight - 24
-        if (reduced || (visible && !shown.has(el))) {
-          clear(el)
-          if (!shown.has(el)) {
-            el.classList.add('reveal-reset')
-            el.classList.toggle('from-top', direction === 'up')
-            el.classList.toggle('from-bottom', direction !== 'up')
-            // Commit the start pose before restoring the transition.
-            void el.offsetWidth
-            el.classList.remove('reveal-reset')
-            el.classList.add('revealed')
-            shown.add(el)
-          }
-        }
-        if (!outside) clear(el)
-        else if (!reduced && shown.has(el) && !timers.has(el)) {
-          timers.set(el, window.setTimeout(() => {
-            const r = el.getBoundingClientRect()
-            if (r.bottom < -96 || r.top > innerHeight + 96) {
-              el.classList.add('reveal-reset')
-              el.classList.remove('revealed')
-              shown.delete(el)
-            }
-            timers.delete(el)
-          }, 1000))
-        }
+    const reveal = (el: HTMLElement) => el.classList.add('from-bottom', 'revealed')
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return
+        reveal(entry.target as HTMLElement)
+        observer.unobserve(entry.target)
       })
-    }
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(scan) }
+    }, { threshold: 0, rootMargin: '0px 0px -24px 0px' })
     elements.forEach((el) => el.classList.remove('revealed', 'from-top', 'from-bottom'))
-    window.addEventListener('scroll', schedule, { passive: true })
-    window.addEventListener('resize', schedule)
-    const observer = new ResizeObserver(schedule)
-    observer.observe(document.body)
-    schedule()
+    elements.forEach(el => { if (reduced) reveal(el); else observer.observe(el) })
     return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', schedule)
-      window.removeEventListener('resize', schedule)
       observer.disconnect()
-      timers.forEach(timer => window.clearTimeout(timer))
       elements.forEach((el) => el.classList.remove('revealed', 'from-top', 'from-bottom', 'reveal-reset'))
       added.forEach((el) => el.classList.remove('reveal', 'auto-reveal'))
     }

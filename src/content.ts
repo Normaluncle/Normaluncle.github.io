@@ -115,16 +115,16 @@ export const faqs = [
   { q: '怎样开始沟通？', a: '可以通过联系页的邮箱、电话或微信二维码找到我。简要说说你的业务场景、当前问题与期望时间，我们再一起判断下一步。' },
 ]
 export const quotes = [
-  { role: '摆摊点单 / 现场笔记', who: '忙起来，没有时间研究界面。', text: '一边收钱、一边做吃的，还要记谁点了什么。给自己做工具后，我才更在意：一个人转过身再回来，能不能一眼接上刚才的事情。', img: 'quote3' as ImgKey, avatar: 'quoteAvatar3' as ImgKey, dark: false },
-  { role: '营销助手 / 项目复盘', who: '留下链接，也得留下理由。', text: '只有分数，下一次还是得重新看。为什么留下这个人，哪里像需求，哪里还不确定——这些说清楚，结果才真的能交到别人手里。', img: 'quote2' as ImgKey, avatar: 'quoteAvatar2' as ImgKey, dark: true },
-  { role: '胜算 / 产品判断', who: '能说很多，不等于会陪伴。', text: '学生说累了，不一定是在等学习建议。我想让胜算先明白这句话，再决定要不要继续问、要不要提醒，有时候也该少说一点。', img: 'quote1' as ImgKey, avatar: 'quoteAvatar1' as ImgKey, dark: false },
-  { role: '门店经历 / 留下的习惯', who: '流程要在人忙的时候也管用。', text: '带场、排班、交接，最怕的是事情只在一个人脑子里。这段经历后来一直跟着我：先把状态摆出来，再谈能不能自动化。', img: 'quote4' as ImgKey, avatar: 'quoteAvatar4' as ImgKey, dark: false },
+  { role: '摆摊点单 / 现场笔记', who: "忙起来，没有时间研究界面", text: '一边收钱、一边做吃的，还要记谁点了什么。给自己做工具后，我才更在意：一个人转过身再回来，能不能一眼接上刚才的事情。', img: 'quote3' as ImgKey, avatar: 'quoteAvatar3' as ImgKey, dark: false },
+  { role: '营销助手 / 项目复盘', who: "留下链接，也得留下理由", text: '只有分数，下一次还是得重新看。为什么留下这个人，哪里像需求，哪里还不确定——这些说清楚，结果才真的能交到别人手里。', img: 'quote2' as ImgKey, avatar: 'quoteAvatar2' as ImgKey, dark: true },
+  { role: '胜算 / 产品判断', who: "能说很多，不等于会陪伴", text: '学生说累了，不一定是在等学习建议。我想让胜算先明白这句话，再决定要不要继续问、要不要提醒，有时候也该少说一点。', img: 'quote1' as ImgKey, avatar: 'quoteAvatar1' as ImgKey, dark: false },
+  { role: '门店经历 / 留下的习惯', who: "流程要在人忙的时候也管用", text: '带场、排班、交接，最怕的是事情只在一个人脑子里。这段经历后来一直跟着我：先把状态摆出来，再谈能不能自动化。', img: 'quote4' as ImgKey, avatar: 'quoteAvatar4' as ImgKey, dark: false },
 ]
 export const stats = [
-  { n: '4', l: '个精选项目', s: '在作品页展开问题、界面与流程。', tag: '项目', no: '001', bline: '胜算、营销助手、任务 Agent 与摆摊点单，分别回应不同的使用场景。' },
+  { n: '1', l: '条贯穿交付的思路', s: '把需求、界面与实现接起来。', tag: '方法', no: '001', bline: '不把设计与功能割裂：先确认问题，再做原型、实现和使用验证。' },
   { n: '2020', l: '从视觉实践出发', s: '从物料与现场，走向交互与系统。', tag: '起点', no: '002', bline: '早期的视觉交付和现场经验，逐渐成为我理解产品需求的基础。' },
-  { n: '1', l: '条贯穿交付的思路', s: '把需求、界面与实现接起来。', tag: '方法', no: '003', bline: '不把设计与功能割裂：先确认问题，再做原型、实现和使用验证。' },
-  { n: '3', l: '个 AI 应用方向', s: '学习陪伴、团队评估、个人任务。', tag: '探索', no: '004', bline: '不同入口，共同原则：身份清楚、执行有边界、结果能复核。' },
+  { n: '3', l: '个 AI 应用方向', s: '学习陪伴、团队评估、个人任务。', tag: '探索', no: '003', bline: '不同入口，共同原则：身份清楚、执行有边界、结果能复核。' },
+  { n: '4', l: '个精选项目', s: '在作品页展开问题、界面与流程。', tag: '项目', no: '004', bline: '胜算、营销助手、任务 Agent 与摆摊点单，分别回应不同的使用场景。' },
 ]
 export { notes } from './articles'
 export const visionWords = ['先理解问题', '把流程理清', '让交互自然', '让系统可用', '再持续迭代']

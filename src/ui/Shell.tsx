@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Lenis from 'lenis'
 import { cancelFrame, frame } from 'motion/react'
 import { IMG, works, contact } from '../content'
@@ -17,10 +17,41 @@ const nav = [
 const ORB_VIDEO = '/media/brand-orb-original.mp4'
 
 function Brand() {
+  const video = useRef<HTMLVideoElement>(null)
+  const [fallback, setFallback] = useState(true)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = video.current!
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let visible = false
+    const play = () => {
+      if (!visible || document.hidden || reduced.matches) { el.pause(); return }
+      el.muted = true
+      void el.play().catch(() => setFallback(true))
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      setInView(visible)
+      play()
+    })
+    observer.observe(el)
+    el.addEventListener('canplay', play)
+    document.addEventListener('visibilitychange', play)
+    document.addEventListener('pointerup', play, { passive: true })
+    reduced.addEventListener('change', play)
+    return () => {
+      observer.disconnect()
+      el.pause()
+      el.removeEventListener('canplay', play)
+      document.removeEventListener('visibilitychange', play)
+      document.removeEventListener('pointerup', play)
+      reduced.removeEventListener('change', play)
+    }
+  }, [])
   return (
     <span className="brand-lockup">
-      <span className="mark" aria-hidden>
-        <video src={ORB_VIDEO} poster={IMG.brandPoster} autoPlay loop muted playsInline preload="auto" />
+      <span className={`mark${fallback ? ' mark-fallback' : ''}${inView ? ' mark-visible' : ''}`} aria-hidden>
+        <video ref={video} src={ORB_VIDEO} poster={IMG.brandPoster} loop muted playsInline preload="auto" onPlaying={() => setFallback(false)} onPause={() => setFallback(true)} onError={() => setFallback(true)} />
       </span>
       <span>王泽斌</span>
     </span>
@@ -28,7 +59,7 @@ function Brand() {
 }
 
 function FooterTitle() {
-  const words = ['从想法，', '到可用的产品。', '一起把下一步做实。']
+  const words = ['从想法', '到可用的产品', '一起把下一步做实']
   return (
     <h2 className="footer-title reveal" aria-label={words.join('')}>
       {words.map((word, i) => (
@@ -44,6 +75,8 @@ type LenisWin = Window & { __lenis?: Lenis }
 
 export default function Shell() {
   const loc = useLocation()
+  const navigate = useNavigate()
+  const entryHandled = useRef(false)
   const [open, setOpen] = useState(false)
   const [dock, setDock] = useState(false)
   const topnavRef = useRef<HTMLElement>(null)
@@ -54,6 +87,14 @@ export default function Shell() {
   const cur = useRef<HTMLDivElement>(null)
   const lenisRef = useRef<Lenis | null>(null)
   const ticksRef = useRef<number[]>([])
+
+  // Every fresh document enters through Home. The shared shell stays mounted
+  // for in-site navigation, so this must not redirect subsequent route changes.
+  useLayoutEffect(() => {
+    if (entryHandled.current) return
+    entryHandled.current = true
+    if (loc.pathname !== '/' || loc.hash) navigate('/', { replace: true })
+  }, [loc.pathname, loc.hash, navigate])
 
   useEffect(() => {
     document.body.classList.toggle('menu-open', open)
@@ -130,18 +171,30 @@ export default function Shell() {
   }, [loc.pathname])
 
   useEffect(() => {
-    const lenis = new Lenis({ autoRaf: false, lerp: 0.12 })
-    lenisRef.current = lenis
-    ;(window as LenisWin).__lenis = lenis
-    const update = (data: { timestamp: number }) => {
-      lenis.raf(data.timestamp)
+    // Native touch inertia has one owner: the browser, not a second scroll loop.
+    const native = window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)')
+    let dispose: (() => void) | undefined
+    const configure = () => {
+      dispose?.()
+      dispose = undefined
+      if (native.matches) return
+      const lenis = new Lenis({ autoRaf: false, lerp: 0.12, syncTouch: false })
+      lenisRef.current = lenis
+      ;(window as LenisWin).__lenis = lenis
+      const update = (data: { timestamp: number }) => lenis.raf(data.timestamp)
+      frame.update(update, true)
+      dispose = () => {
+        cancelFrame(update)
+        lenis.destroy()
+        lenisRef.current = null
+        delete (window as LenisWin).__lenis
+      }
     }
-    frame.update(update, true)
+    configure()
+    native.addEventListener('change', configure)
     return () => {
-      cancelFrame(update)
-      lenis.destroy()
-      lenisRef.current = null
-      delete (window as LenisWin).__lenis
+      native.removeEventListener('change', configure)
+      dispose?.()
     }
   }, [])
 
@@ -243,25 +296,39 @@ export default function Shell() {
   }, [loc.pathname])
 
   useEffect(() => {
-    let lastY = 0
-    let dir = 0
+    // Shared by every route. Clamp Safari rubber-band scrolling so rebound
+    // at the page boundary is not mistaken for an intentional direction change.
+    const scrollPosition = () => Math.max(0, Math.min(window.scrollY, Math.max(0, document.documentElement.scrollHeight - window.innerHeight)))
+    let lastY = scrollPosition()
+    setDock(false)
+    const followDirection = () => {
+      const y = scrollPosition()
+      const delta = y - lastY
+      if (Math.abs(delta) < 0.75) return
+      setDock(delta < 0)
+      lastY = y
+    }
+    // Also available on short pages and when the pointer is already at the top.
+    const wheel = (event: WheelEvent) => {
+      if (event.ctrlKey || !event.deltaY || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return
+      setDock(event.deltaY < 0)
+    }
+    window.addEventListener('scroll', followDirection, { passive: true })
+    window.addEventListener('wheel', wheel, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', followDirection)
+      window.removeEventListener('wheel', wheel)
+    }
+  }, [loc.pathname])
+
+  useEffect(() => {
     const sync = () => {
       const secs = [...document.querySelectorAll<HTMLElement>('[data-rail]')]
       const scroll = lenisRef.current?.scroll ?? window.scrollY
-      const mobile = window.innerWidth < 810
-      // mono's top nav is not fixed: it translates 1:1 with scroll (sampled
-      // y = 41 − scrollY), fully gone after the first ~150px. Past the hero
-      // the bottom dock is the only nav — shown while scrolling UP past 3vh
-      // (hides on down-scroll and near the top, per original behavior)
       const navEl = topnavRef.current
       // mono: the top nav scrolls away 1:1 on mobile too — it is not a fixed
       // bar covering the content
       if (navEl) navEl.style.transform = `translateY(${-scroll}px)`
-      const dy = scroll - lastY
-      if (Math.abs(dy) > 1.5) dir = dy
-      lastY = scroll
-      const show = !mobile && scroll > window.innerHeight * 3 && dir <= 0
-      setDock((d) => (d === show ? d : show))
       const y = scroll + window.innerHeight * 0.38
       let dark = false
       let idx = 0
@@ -362,6 +429,7 @@ export default function Shell() {
       <nav className={dock ? 'dock on' : 'dock'} aria-label="底部导航" inert={!dock} aria-hidden={!dock}>
         <NavLink to="/" end>首页</NavLink>
         <NavLink to="/studio">关于</NavLink>
+        <NavLink to="/work">项目</NavLink>
         <Link to="/" className="logo"><Brand /></Link>
         <NavLink to="/news">笔记</NavLink>
         <NavLink to="/contact">联系</NavLink>
@@ -380,7 +448,7 @@ export default function Shell() {
           <div className="news-box">
             <Link to="/" className="logo"><Brand /></Link>
             <p className="kicker" style={{ marginTop: 24 }}>(产品 · 设计 · AI 应用)</p>
-            <h3>把业务问题，做成可用的体验。</h3>
+            <h3>把业务问题，做成可用的体验</h3>
             <p className="footer-summary">从视觉与门店现场出发，关注产品逻辑、界面细节与有边界的自动化。这里记录我的项目、方法和持续探索。</p>
             <p className="copy">© 2026 王泽斌</p>
           </div>

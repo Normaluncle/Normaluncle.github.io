@@ -4,7 +4,7 @@ import { IMG, notes } from '../content'
 export default function Article() {
   const { slug } = useParams()
   const note = notes.find(n => n.slug === slug)
-  if (!note) return <main className="page wrap"><h1>这篇笔记还不存在。</h1><Link className="pill" to="/news">返回笔记</Link></main>
+  if (!note) return <main className="page wrap"><h1>这篇笔记还不存在</h1><Link className="pill" to="/news">返回笔记</Link></main>
   return <main className="page article-page">
     <header className="wrap article-head">
       <Link className="article-back" to="/news">← 全部笔记</Link>

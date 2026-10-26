@@ -3,7 +3,7 @@ import { contact } from '../content'
 export default function ContactPanel({ light = false }: { light?: boolean }) {
   return <div className={`glass contact-panel reveal${light ? ' light' : ''}`}>
     <p className="kicker">(开始沟通)</p>
-    <h2>聊聊你的下一步。</h2>
+    <h2>聊聊你的下一步</h2>
     <p className="contact-intro">岗位机会、产品想法，或一个想解决的业务问题，都可以从一次具体的交流开始。</p>
     <div className="contact-details">
       <div><span>邮箱</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
